@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Администрация Катакомб</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cGF0aCBmaWxsPSIjNGVjZGM0IiBkPSJNMjU2IDhDMTE5IDggOCAxMTkgOCAyNTZzMTExIDI0OCAyNDggMjQ4IDI0OC0xMTEgMjQ4LTI0OFMzOTMgOCAyNTYgOHptMCA0NDhjLTExMC41IDAtMjAwLTg5LjUtMjAwLTIwMFMxNDUuNSA1NiAyNTYgNTZzMjAwIDg5LjUgMjAwIDIwMC04OS41IDIwMC0yMDAgMjAweiIvPjwvc3ZnPg==">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <style>
+        :root {
+            --gradient-1: linear-gradient(135deg, #1e2024 0%, #23272b 100%);
+            --gradient-2: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            --neon-shadow: 0 0 15px rgba(78, 205, 196, 0.3);
+            --bg-color: #1e2024;
+        }
+
+        html {
+            background-color: var(--bg-color);
+            background-image: var(--gradient-1);
+            min-height: 100%;
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: transparent;
+            color: #ffffff;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 60px 0;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: var(--neon-shadow);
+        }
+
+        .admin-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            padding: 40px 20px;
+        }
+
+        .admin-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            z-index: 1;
+        }
+
+        .admin-card:hover {
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.3);
+            z-index: 10;
+        }
+
+        .admin-card:hover .admin-photo {
+            box-shadow: 0 0 30px rgba(78, 205, 196, 0.5);
+        }
+
+        .admin-photo {
+            width: 200px;
+            height: 200px;
+            border-radius: 30px;
+            margin: 0 auto 25px;
+            display: block;
+            object-fit: cover;
+            position: relative;
+            padding: 4px;
+            background: linear-gradient(
+                45deg,
+                #ff6b6b,
+                #4ecdc4,
+                #ff6b6b
+            );
+            background-size: 200% 200%;
+            animation: gradient 3s ease infinite;
+            box-shadow: 0 0 20px rgba(78, 205, 196, 0.3);
+        }
+
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .admin-name {
+            font-size: 1.8rem;
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .admin-role {
+            color: #4ecdc4;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .admin-bio {
+            text-align: justify;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .telegram-link {
+            color: #4ecdc4;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 12px 25px;
+            border-radius: 30px;
+            border: 2px solid #4ecdc4;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .telegram-link:hover {
+            background: #4ecdc4;
+            color: #1e2024;
+            box-shadow: 0 0 20px rgba(78, 205, 196, 0.5);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+            
+            .admin-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                padding: 20px 10px;
+            }
+            
+            .admin-card {
+                padding: 20px;
+            }
+
+            .admin-photo {
+                width: 150px;
+                height: 150px;
+                padding: 3px;
+            }
+
+            .admin-name {
+                font-size: 1.5rem;
+            }
+
+            .admin-role {
+                font-size: 0.9rem;
+            }
+
+            .admin-bio {
+                font-size: 1rem;
+            }
+
+            .telegram-link {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (min-width: 769px) and (max-width: 1200px) {
+            .admin-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Обновляем стили для кнопок */
+        .admin-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 25px;
+            width: 100%;
+        }
+
+        .admin-button {
+            flex: 1;
+            padding: 15px 0;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            text-align: center;
+            min-width: 0;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .button-primary {
+            background: var(--gradient-2);
+            color: #fff;
+            border: none;
+        }
+
+        .button-secondary {
+            background: transparent;
+            color: #4ecdc4;
+            border: 2px solid #4ecdc4;
+        }
+
+        .admin-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            transition: 0.5s;
+            z-index: -1;
+        }
+
+        .admin-button:hover::before {
+            left: 100%;
+        }
+
+        .button-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(78, 205, 196, 0.4);
+        }
+
+        .button-secondary:hover {
+            background: #4ecdc4;
+            color: #1e2024;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(78, 205, 196, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .admin-buttons {
+                gap: 8px;
+                padding: 0;
+            }
+
+            .admin-button {
+                padding: 12px 0;
+                font-size: 0.75rem;
+                letter-spacing: 0.5px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .admin-buttons {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .admin-button {
+                width: 100%;
+                padding: 10px 0;
+            }
+        }
+
+        /* Добавляем стили для тултипа */
+        .admin-photo-container {
+            position: relative;
+            width: 200px;
+            margin: 0 auto 25px;
+            z-index: 20;
+        }
+
+        .tooltip {
+            position: absolute;
+            background: rgba(30, 32, 36, 0.95);
+            color: #4ecdc4;
+            padding: 10px 15px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            pointer-events: none;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(78, 205, 196, 0.3);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            z-index: 30;
+            white-space: nowrap;
+            left: 100%;
+            top: 50%;
+            margin-left: 15px;
+        }
+
+        .tooltip::before {
+            content: '';
+            position: absolute;
+            left: -6px;
+            top: 50%;
+            transform: translateY(-50%);
+            border-style: solid;
+            border-width: 6px 6px 6px 0;
+            border-color: transparent rgba(78, 205, 196, 0.3) transparent transparent;
+        }
+
+        .show-tooltip .tooltip {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            .admin-photo-container {
+                width: 150px;
+            }
+            
+            .tooltip {
+                left: 50%;
+                top: 100%;
+                transform: translateX(-50%) translateY(10px);
+                margin-left: 0;
+                margin-top: 10px;
+            }
+
+            .tooltip::before {
+                left: 50%;
+                top: -6px;
+                transform: translateX(-50%);
+                border-width: 0 6px 6px 6px;
+                border-color: transparent transparent rgba(78, 205, 196, 0.3) transparent;
+            }
+
+            .show-tooltip .tooltip {
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <h1>Администрация Катакомб</h1>
+    </header>
+
+    <div class="container">
+        <div class="admin-grid">
+            <div class="admin-card">
+                <div class="admin-photo-container">
+                    <img src="3.gif" alt="APT29388" class="admin-photo">
+                    <span class="tooltip">Мы из России, вам пизда</span>
+                </div>
+                <h2 class="admin-name">APT29388</h2>
+                <p class="admin-role">Владелец</p>
+                <div class="admin-buttons">
+                    <a href="https://t.me/APT29388" class="admin-button button-primary">Написать</a>
+                    <a href="https://lolz.live/dead" class="admin-button button-secondary">Профиль</a>
+                </div>
+            </div>
+
+            <div class="admin-card">
+                <div class="admin-photo-container">
+                    <img src="1.gif" alt="sonMaclo" class="admin-photo">
+                    <span class="tooltip">Политика, деньги, проститутки</span>
+                </div>
+                <h2 class="admin-name">sonMaclo</h2>
+                <p class="admin-role">Владелец</p>
+                <div class="admin-buttons">
+                    <a href="https://t.me/c1cada_0" class="admin-button button-primary">Написать</a>
+                    <a href="https://lolz.live/sonmaclo" class="admin-button button-secondary">Профиль</a>
+                </div>
+            </div>
+
+            <div class="admin-card">
+                <div class="admin-photo-container">
+                    <img src="4.jpg" alt="404HotFound" class="admin-photo">
+                    <span class="tooltip">Мне в голову только неадекватное приходит</span>
+                </div>
+                <h2 class="admin-name">404HotFound</h2>
+                <p class="admin-role">Создатель вайбика</p>
+                <div class="admin-buttons">
+                    <a href="https://t.me/AkrapovichVita" class="admin-button button-primary">Написать</a>
+                    <a href="https://lolz.live/pink_fairy/" class="admin-button button-secondary">Профиль</a>
+                </div>
+            </div>
+
+            <div class="admin-card">
+                <div class="admin-photo-container">
+                    <img src="2.gif" alt="БиллиНогами" class="admin-photo">
+                    <span class="tooltip">Сияние 1980</span>
+                </div>
+                <h2 class="admin-name">БиллиНогами</h2>
+                <p class="admin-role">Создатель вайбика</p>
+                <div class="admin-buttons">
+                    <a href="https://t.me/killme_lzt" class="admin-button button-primary">Написать</a>
+                    <a href="https://lolz.live/cardinal/" class="admin-button button-secondary">Профиль</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <a href="https://t.me/catacombs_lzt" class="telegram-link">Присоединиться к Катакомбам</a>
+    </footer>
+    <script>
+        document.querySelectorAll('.admin-photo-container').forEach(container => {
+            container.addEventListener('click', () => {
+                container.classList.add('show-tooltip');
+                setTimeout(() => {
+                    container.classList.remove('show-tooltip');
+                }, 2000);
+            });
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
